@@ -1,4 +1,5 @@
 <div class="container">
+  <div class="jumbotron text-center"><h3>ToDo List App</h3></div>
   <div class="row">
     <div class="col-md-6">
       <div class="card" style="top: 10px">
@@ -10,8 +11,11 @@
               <input type="text" class="form-control" value="" formControlName="todolist" id="todolist"
                name="todolist">
 
-               <form class="form-inline mt-2" *ngFor="let todo of todolistarr">
-                  <input type="text" class="form-control" value="{{ todo.todolist }}" readonly>
+               <div class="jumbotron text-center mt-3" *ngIf="todolistarr == ''">
+                  <h5>Your ToDo List is Empty</h5>
+                </div>
+                <form class="form-inline mt-2" *ngFor="let todo of todolistarr; let i=index">
+                  <input type="text" class="form-control" value=" [{{ i+1 }}]  {{ todo.todolist }}" readonly>
                   <!-- <button type="submit" class="btn btn-outline-success btn-md m-2" >Submit</button> -->
                   <button type="submit" class="btn btn-outline-danger btn-md m-2" (click)="onDeleteTodo(todo.id)">Delete</button>
                   <button type="submit" class="btn btn-outline-primary btn-md m-2" (click)="onEditTodo(todo.id)">Edit</button>
@@ -23,14 +27,19 @@
     </div>
     <div class="col-md-6">
       <div class="card" style="top: 10px">
-        <div class="card-header">Employee Register</div>
+        <div class="card-header">Employee Register Edit</div>
         <div class="card-body">
           <form [formGroup]="todoEditForm" (ngSubmit)="onEditSubmitTodo(todoEditForm.value)" action="">
+            <div class="jumbotron text-center" *ngIf="editfilter == ''">
+              <h5>There is no Todo for Edit</h5>
+            </div>
             <div class="form-group" *ngFor="let editfil of editfilter">
               <label for="" >Enter ToDo Activity</label>
-              <input type="text" class="form-control" value="{{editfil.todolist}}" formControlName="todolist" id="todolist"
-               name="todolist">
-              <button type="submit" class="btn btn-outline-success btn-md mt-4" >Edit Done</button>
+              <input type="text" class="form-control" value="{{editfil.todolist}}" 
+              formControlName="todolist" id="todolist" name="todolist" required>
+               <input type="hidden" name="hiddenid" id="hiddenid" formControlName="hiddenid" 
+                class="form-control" value="{{ editfil.id }}">
+              <button type="submit" class="btn btn-outline-success btn-md mt-4" [disabled]="!todoEditForm.touched">Update</button>
             </div>
           </form>
         </div>

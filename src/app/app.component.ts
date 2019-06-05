@@ -13,35 +13,31 @@ export class AppComponent implements OnInit {
   public todoEditForm: FormGroup;
   
   ngOnInit(){
-    // console.log(this.todolist);
     this.todolistarr = JSON.parse(localStorage.getItem('todo'));
   }
+
   constructor(private fb: FormBuilder){
-
     this.todoForm = this.fb.group({
-      "todolist": ['', [Validators.required]]
+      todolist: ['', [Validators.required]]
     });
-
-   
 
     ///code for editTodo
     const previoustodo = JSON.parse(localStorage.getItem('todo'));
     console.log('edittodo', previoustodo);
 
-    // this.editfilter = edittodo.filter(edid => edid.id === );
-    // this.neweditFilter = previoustodo.filter(xid => xid === this.editfilter[0].id);
     //formgroup for editForm
     this.todoEditForm = this.fb.group({
-      "todolist": ['', [Validators.required]]      
-    })
+      hiddenid: ['', [Validators.required]], 
+      todolist: ['', [Validators.required]]            
+    });
 
     console.log('value',this.todoEditForm.value);
   }
-
-  
+  myfun(){
+    return false;
+  }
 
   onSubmitTodo(){
-    // console.log(this.todoForm.value);
     // localStorage.clear();
     var previousTodo = JSON.parse(localStorage.getItem('todo')) || [];
     
@@ -64,7 +60,6 @@ export class AppComponent implements OnInit {
 
     localStorage.setItem('todo', JSON.stringify(previousTodo));
     this.todolistarr = JSON.parse(localStorage.getItem('todo'));
-    // console.log(this.todolistarr);
     this.todoForm.reset();
   }
 
@@ -72,31 +67,27 @@ export class AppComponent implements OnInit {
   onEditTodo(id){
     var previoustodo = JSON.parse(localStorage.getItem('todo'));
     this.editfilter = previoustodo.filter(m => m.id === id);
-    // console.log('editfilter',this.editfilter);
   }
 
-  onEditSubmitTodo(){
+  onEditSubmitTodo(id){
     var previoustodo = JSON.parse(localStorage.getItem('todo'));
-    const data = previoustodo.filter(m => m.id === this.editfilter[0].id);
-    console.log('data of edit item :', data);
-    
+    const data = previoustodo.filter(m => m.id === this.editfilter[0].id);    
     var newdata = {
-      'id': data.id,
-      'todolist': this.todoEditForm.value.todolit
-    }
-
-    var index = previoustodo.filter(m => m.id == newdata.id);
-
-    console.log('index',index);
+      'hiddenid': data[0].id,
+      'todolist': this.todoEditForm.value.todolist
+    }   
+    var index = previoustodo.findIndex(m => m.id == data[0].id);
+    previoustodo[index] = newdata;
+    localStorage.setItem('todo', JSON.stringify(previoustodo));
+    this.todolistarr = JSON.parse(localStorage.getItem('todo'));
   }
 
+  //deleting todo list from localStorage
   onDeleteTodo(id){
-    // console.log('id',id);
-
     var index = this.todolistarr.findIndex(x => x.id === id);
-    // console.log('index',index);
     this.todolistarr.splice(index, 1);
     localStorage.setItem('todo',JSON.stringify(this.todolistarr));
+    this.todoEditForm.reset();
   }
 
 }
