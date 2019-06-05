@@ -15,7 +15,15 @@
                   <h5>Your ToDo List is Empty</h5>
                 </div>
                 <form class="form-inline mt-2" *ngFor="let todo of todolistarr; let i=index">
-                  <input type="text" class="form-control" value=" [{{ i+1 }}]  {{ todo.todolist }}" readonly>
+                  <!-- <input type="text" class="form-control" value=" [{{ i+1 }}]  {{ todo.todolist }}" readonly> -->
+                  <form class="form-inline">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">{{ i+1 }}</span>
+                      </div>
+                      <input type="text" class="form-control"  value="{{ todo.todolist }}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" readonly>
+                    </div>
+                  </form>
                   <!-- <button type="submit" class="btn btn-outline-success btn-md m-2" >Submit</button> -->
                   <button type="submit" class="btn btn-outline-danger btn-md m-2" (click)="onDeleteTodo(todo.id)">Delete</button>
                   <button type="submit" class="btn btn-outline-primary btn-md m-2" (click)="onEditTodo(todo.id)">Edit</button>
