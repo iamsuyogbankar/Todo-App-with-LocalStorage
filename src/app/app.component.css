@@ -1,0 +1,11 @@
+.card{
+    border: 2px solid gray;
+}
+input {
+    border: 1px solid gray;
+}
+.card-header{
+    background-color: black;
+    color: whitesmoke;
+    text-align: center;
+}
